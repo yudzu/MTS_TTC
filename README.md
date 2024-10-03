@@ -1,2 +1,2 @@
-# MTS True Tech Camp
+# MTS True Tech Champ
 Qualifying stage
