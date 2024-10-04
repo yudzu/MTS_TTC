@@ -20,3 +20,7 @@ def get_sensor_data():
     right_side_dist = data["right_side_distance"]
     yaw = data["rotation_yaw"]  # поворот
     return [front_dist, back_dist, left_45_dist, right_45_dist, left_side_dist, right_side_dist, yaw]
+
+
+def restart():
+    requests.post(f"http://127.0.0.1:8801/api/v1/maze/restart?token={token}")
