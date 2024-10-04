@@ -86,8 +86,9 @@ maze = [[0 for _ in range(16)] for _ in range(16)]
 flag = True
 # РЕШЕНИЕ МЕТОДОМ ПРАВОЙ РУКИ
 while flag:
-    print(get_sensor_data())
     front_dist, back_dist, left_side_dist, right_side_dist, yaw = get_sensor_data()
+    print(front_dist, back_dist, left_side_dist, right_side_dist, yaw)
+    # доделать изменение i, j в завсимости от перемещения робота
     maze[i][j] = get_wall(front_dist, back_dist, left_side_dist, right_side_dist, yaw)
     if right_side_dist > 80:
         turn_right()
