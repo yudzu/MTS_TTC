@@ -47,7 +47,7 @@ def compare_data_to_wall(f, b, l, r):
         return 4
     elif f > 80 and b < 80 and l < 80 and r > 80:
         return 5
-    elif f > 80 and b < 80 and l > 80 and r > 80:
+    elif f > 80 and b < 80 and l > 80 and r < 80:
         return 6
     elif f < 80 and b > 80 and l > 80 and r < 80:
         return 7
@@ -80,6 +80,18 @@ def get_wall(f, b, l, r, y):
         return compare_data_to_wall(r, l, f, b)
 
 
+def change_position(yaw, i, j):
+    if -45 < yaw < 45:  # вверх
+        i -= 1
+    elif 45 < yaw < 135:  # вправо
+        j += 1
+    elif -225 < yaw < -135:  # вниз
+        i += 1
+    elif -135 < yaw < -45:  # влево
+        j -= 1
+    return i, j
+
+
 # расстояние между центрами двух клеток ~167
 i, j = 15, 0
 maze = [[0 for _ in range(16)] for _ in range(16)]
@@ -87,14 +99,14 @@ flag = True
 # РЕШЕНИЕ МЕТОДОМ ПРАВОЙ РУКИ
 while flag:
     front_dist, back_dist, left_side_dist, right_side_dist, yaw = get_sensor_data()
-    print(front_dist, back_dist, left_side_dist, right_side_dist, yaw)
-    # доделать изменение i, j в завсимости от перемещения робота
     maze[i][j] = get_wall(front_dist, back_dist, left_side_dist, right_side_dist, yaw)
     if right_side_dist > 80:
         turn_right()
         move_forward()
+        i, j = change_position(get_sensor_data()[4], i, j)
     elif front_dist > 80:
         move_forward()
+        i, j = change_position(yaw, i, j)
     else:
         turn_right()
         turn_right()
@@ -103,6 +115,6 @@ while flag:
         if 0 in row:
             enough = False
             break
-    flag = ~enough
+    flag = not enough
 print(maze)
 print(send_result(maze))
